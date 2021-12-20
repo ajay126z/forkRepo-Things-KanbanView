@@ -22,7 +22,7 @@ AUTHOR = "Alexander Willner"
 AUTHOR_MAIL = "alex@willner.ws"
 DESCRIPTON = "A simple read-only Kanban App for Things 3"
 URL = "https://kanbanview.app"
-VERSION = "2.8.0"
+VERSION = "2.8.3"
 DATA_FILES = package_files("resources")
 OPTIONS = {
     "argv_emulation": False,
@@ -34,7 +34,7 @@ OPTIONS = {
         "CFBundleIdentifier": "ws.willner.kanbanview",
         "CFBundleVersion": VERSION,
         "LSApplicationCategoryType": "public.app-category.productivity",
-        "LSMinimumSystemVersion": "10.13.0",
+        "LSMinimumSystemVersion": "10.15.0",
         "NSHumanReadableCopyright": "Copyright 2021 " + AUTHOR,
     },
     "optimize": "2",
