@@ -22,7 +22,7 @@ AUTHOR = "Alexander Willner"
 AUTHOR_MAIL = "alex@willner.ws"
 DESCRIPTON = "A simple read-only Kanban App for Things 3"
 URL = "https://kanbanview.app"
-VERSION = "2.8.3"
+VERSION = "2.9.0"
 DATA_FILES = package_files("resources")
 OPTIONS = {
     "argv_emulation": False,
@@ -67,6 +67,7 @@ setup(
     data_files=DATA_FILES,
     options={"py2app": OPTIONS},
     setup_requires=["py2app"],
+    install_requires=["things.py>=0.0.15", "pywebview>=3.0.0"],
     entry_points={
         "console_scripts": [
             "things-cli = things3.things3_cli:main",

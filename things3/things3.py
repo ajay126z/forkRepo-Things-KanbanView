@@ -9,8 +9,8 @@ import sys
 from random import shuffle
 from datetime import datetime, timedelta
 import os
+import glob
 from os import environ, path
-import getpass
 import configparser
 from pathlib import Path
 import sqlite3
@@ -29,9 +29,8 @@ class Things3:
     # Database info
     FILE_CONFIG = str(Path.home()) + "/.kanbanviewrc"
     FILE_DB = (
-        "/Library/Group Containers/"
-        "JLMPQHK86H.com.culturedcode.ThingsMac/"
-        "Things Database.thingsdatabase/main.sqlite"
+        "~/Library/Group Containers/JLMPQHK86H.com.culturedcode.ThingsMac"
+        "/ThingsData-*/Things Database.thingsdatabase/main.sqlite"
     )
     TABLE_TASK = "TMTask"
     TABLE_AREA = "TMArea"
@@ -39,7 +38,7 @@ class Things3:
     TABLE_TASKTAG = "TMTaskTag"
     DATE_CREATE = "creationDate"
     DATE_MOD = "userModificationDate"
-    DATE_DUE = "dueDate"
+    DATE_DUE = "deadline"
     DATE_START = "startDate"
     DATE_STOP = "stopDate"
     IS_INBOX = "start = 0"  # noqa
@@ -48,8 +47,8 @@ class Things3:
     IS_SCHEDULED = f"{DATE_START} IS NOT NULL"
     IS_NOT_SCHEDULED = f"{DATE_START} IS NULL"
     IS_DUE = f"{DATE_DUE} IS NOT NULL"  # noqa
-    IS_RECURRING = "recurrenceRule IS NOT NULL"
-    IS_NOT_RECURRING = "recurrenceRule IS NULL"  # noqa
+    IS_RECURRING = "rt1_recurrenceRule IS NOT NULL"
+    IS_NOT_RECURRING = "rt1_recurrenceRule IS NULL"  # noqa
     IS_TASK = "type = 0"
     IS_PROJECT = "type = 1"
     IS_HEADING = "type = 2"
@@ -58,15 +57,14 @@ class Things3:
     IS_OPEN = "status = 0"
     IS_CANCELLED = "status = 2"
     IS_DONE = "status = 3"
-    RECURRING_IS_NOT_PAUSED = "instanceCreationPaused = 0"
-    RECURRING_HAS_NEXT_STARTDATE = "nextInstanceStartDate IS NOT NULL"
+    RECURRING_IS_NOT_PAUSED = "rt1_instanceCreationPaused = 0"
+    RECURRING_HAS_NEXT_STARTDATE = "rt1_nextInstanceStartDate IS NOT NULL"
     MODE_TASK = "type = 0"
     MODE_PROJECT = "type = 1"
 
     # Variables
     debug = False
-    user = getpass.getuser()
-    database = f"/Users/{user}/{FILE_DB}"
+    database = next(glob.iglob(os.path.expanduser(FILE_DB)))
     filter = ""
     tag_waiting = "Waiting"
     tag_mit = "MIT"
@@ -323,7 +321,7 @@ class Things3:
                         )
                     )
                 )
-                ORDER BY TASK.duedate DESC , TASK.todayIndex
+                ORDER BY TASK.deadline DESC , TASK.todayIndex
                 """
         if self.filter:
             # ugly hack for Kanban task view on project
@@ -343,7 +341,7 @@ class Things3:
                         )
                     )
                 )
-                ORDER BY TASK.duedate DESC , TASK.todayIndex
+                ORDER BY TASK.deadline DESC , TASK.todayIndex
                 """
         return self.get_rows(query)
 
@@ -410,7 +408,7 @@ class Things3:
             (TASK.{self.IS_SOMEDAY} OR TASK.{self.IS_ANYTIME}) AND
             TASK.project IS NULL AND
             TASK.area IS NULL AND
-            TASK.actionGroup IS NULL
+            TASK.heading IS NULL
             """
         return self.get_rows(query)
 
@@ -612,9 +610,9 @@ Any additional information:
                     WHEN PROJECT.uuid IS NOT NULL THEN PROJECT.uuid
                 END AS context_uuid,
                 CASE
-                    WHEN TASK.recurrenceRule IS NULL
-                    THEN strftime('%d.%m.', TASK.dueDate,"unixepoch") ||
-                         substr(strftime('%Y', TASK.dueDate,"unixepoch"),3, 2)
+                    WHEN TASK.rt1_recurrenceRule IS NULL
+                    THEN strftime('%d.%m.', TASK.deadline,"unixepoch") ||
+                         substr(strftime('%Y', TASK.deadline,"unixepoch"),3, 2)
                 ELSE NULL
                 END AS due,
                 date(TASK.{self.DATE_CREATE},"unixepoch") as created,
@@ -648,7 +646,7 @@ Any additional information:
             LEFT OUTER JOIN
                 {self.TABLE_AREA} AREA ON TASK.area = AREA.uuid
             LEFT OUTER JOIN
-                {self.TABLE_TASK} HEADING ON TASK.actionGroup = HEADING.uuid
+                {self.TABLE_TASK} HEADING ON TASK.heading = HEADING.uuid
             LEFT OUTER JOIN
                 {self.TABLE_TASK} HEADPROJ ON HEADING.project = HEADPROJ.uuid
             LEFT OUTER JOIN
