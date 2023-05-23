@@ -112,6 +112,7 @@ clean:
 	@rm -rf build dist *.egg-info
 	@rm -rf .mypy_cache/
 	@rm -f .coverage
+	@rm -rf .eggs
 
 auto-style:
 	@type black >/dev/null 2>&1 || (echo "Run '$(PIP) install black' first." >&2 ; exit 1)
