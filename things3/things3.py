@@ -83,7 +83,7 @@ class Things3:
     filter_area = None
     debug_text = ""
 
-    # pylint: disable=R0913,C0330
+    # pylint: disable=R0913
     def __init__(
         self,
         database=None,
@@ -143,15 +143,6 @@ class Things3:
 
         cfg = self.get_from_config(database, "THINGSDB")
         self.database = cfg if cfg else self.database
-        # Automated migration to new database location in Things 3.12.6/3.13.1
-        # --------------------------------
-        try:
-            with open(self.database, encoding="utf-8") as f_d:
-                if "Your database file has been moved there" in f_d.readline():
-                    self.database = f"/Users/{self.user}/{self.FILE_DB}"
-        except (UnicodeDecodeError, FileNotFoundError, PermissionError):
-            pass  # binary file (old database) or doesn't exist
-        # --------------------------------
         self.set_config("THINGSDB", self.database)
 
     def set_config(self, key, value, domain="DATABASE"):
@@ -211,12 +202,12 @@ class Things3:
 
     def defaults(self):
         """Some default options for the new API."""
-        return dict(
-            type=self.mode,
-            project=self.filter_project,
-            area=self.filter_area,
-            filepath=self.database,
-        )
+        return {
+            'type': self.mode,
+            'project': self.filter_project,
+            'area': self.filter_area,
+            'filepath': self.database,
+        }
 
     def convert_new_things_lib(self, tasks):
         """Convert tasks from new library to old expectations."""

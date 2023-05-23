@@ -10,7 +10,7 @@ def package_files(directory):
     """Automatically add data resources."""
     paths = []
     # pylint: disable=unused-variable
-    for (path, _directories, filenames) in os.walk(directory):
+    for path, _directories, filenames in os.walk(directory):
         for filename in filenames:
             paths.append((directory, [os.path.join(path, filename)]))
     return paths

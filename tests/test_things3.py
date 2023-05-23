@@ -10,7 +10,7 @@ from things3.things3 import Things3
 class Things3Case(unittest.TestCase):
     """Class documentation goes here."""
 
-    FILEPATH = dict(filepath="resources/demo.sqlite3")
+    FILEPATH = {'filepath': "resources/demo.sqlite3"}
 
     def setUp(self):
         self.things3 = Things3(database="resources/demo.sqlite3")
@@ -120,7 +120,7 @@ class Things3Case(unittest.TestCase):
         """Test get projects."""
         projects = self.things3.get_projects()
         self.assertEqual(8, len(projects))
-        self.assertEqual(2, projects.pop()["size"])
+        self.assertEqual(3, projects.pop()["size"])
 
     def test_get_areas(self):
         """Test get areas."""

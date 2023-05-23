@@ -159,6 +159,11 @@ deps-install:
 	@$(PIP) install -r requirements.txt
 	@#$(PIPENV) install
 
+.PHONY: deps-upgrade
+deps-upgrade: ## Upgrade the dependencies
+	@if type pip-upgrade >/dev/null 2>&1 ; then pip-upgrade --skip-virtualenv-check requirements.txt ; \
+	 else echo "SKIPPED. Run '$(PIP) install pip-upgrade' first." >&2 ; fi
+
 feedback:
 	@open https://github.com/AlexanderWillner/KanbanView/issues
 
@@ -190,3 +195,9 @@ jpg:
 upload: clean
 	@python3 setup.py sdist bdist_wheel
 	@python3 -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/things3*
+
+db-to-things:
+	@cp resources/demo.sqlite3 ~/Library/Group\ Containers/JLMPQHK86H.com.culturedcode.ThingsMac/ThingsData-*/Things\ Database.thingsdatabase/main.sqlite
+
+db-from-things:
+	@cp ~/Library/Group\ Containers/JLMPQHK86H.com.culturedcode.ThingsMac/ThingsData-*/Things\ Database.thingsdatabase/main.sqlite resources/demo.sqlite3

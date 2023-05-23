@@ -10,4 +10,4 @@ omit =
     */__init__.py
     src/*_app.py
     tests/*
-    *site-packages*
+    */site-packages/*
