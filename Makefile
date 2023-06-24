@@ -201,3 +201,8 @@ db-to-things:
 
 db-from-things:
 	@cp ~/Library/Group\ Containers/JLMPQHK86H.com.culturedcode.ThingsMac/ThingsData-*/Things\ Database.thingsdatabase/main.sqlite resources/demo.sqlite3
+
+.PHONY: deps-upgrade
+deps-upgrade: ## Upgrade the dependencies
+	@if type pip-upgrade >/dev/null 2>&1 ; then pip-upgrade --skip-virtualenv-check requirements.txt ; \
+	 else echo "SKIPPED. Run '$(PIP) install pip-upgrade' first." >&2 ; fi
