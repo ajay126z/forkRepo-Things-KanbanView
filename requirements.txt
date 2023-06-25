@@ -13,3 +13,4 @@ twine==4.0.2
 things.py==0.0.15
 modulegraph==0.19.5
 macholib==1.16.2
+py2app==0.28.6
