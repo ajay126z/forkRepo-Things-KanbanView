@@ -5,13 +5,15 @@
 
 from __future__ import print_function
 
+import os
+import glob
 import sys
 import signal
 from os import system
 from threading import Thread
 import webview  # type: ignore
 import objc  # type: ignore # pylint: disable=unused-import,import-error # noqa F401
-from things3 import things3_api
+from things3 import things3_api, things3
 
 
 class Things3App:
@@ -29,7 +31,8 @@ class Things3App:
         self.api.main()
 
     def __init__(self, database=None, debug_text=""):
-        self.database = database
+        database = database or things3.Things3.FILE_DB
+        self.database = next(glob.iglob(os.path.expanduser(database)))
         self.api = things3_api.Things3API(database=self.database, debug_text=debug_text)
 
     def sigterm_handler(self, _signo, _stack_frame):

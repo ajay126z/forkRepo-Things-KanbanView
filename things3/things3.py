@@ -9,7 +9,6 @@ import sys
 from random import shuffle
 from datetime import datetime, timedelta
 import os
-import glob
 from os import environ, path
 import configparser
 from pathlib import Path
@@ -64,7 +63,7 @@ class Things3:
 
     # Variables
     debug = False
-    database = next(glob.iglob(os.path.expanduser(FILE_DB)))
+    database = FILE_DB
     filter = ""
     tag_waiting = "Waiting"
     tag_mit = "MIT"
@@ -203,10 +202,10 @@ class Things3:
     def defaults(self):
         """Some default options for the new API."""
         return {
-            'type': self.mode,
-            'project': self.filter_project,
-            'area': self.filter_area,
-            'filepath': self.database,
+            "type": self.mode,
+            "project": self.filter_project,
+            "area": self.filter_area,
+            "filepath": self.database,
         }
 
     def convert_new_things_lib(self, tasks):
