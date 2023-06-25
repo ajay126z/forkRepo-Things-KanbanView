@@ -62,7 +62,7 @@ setup(
         "Framework :: Flask",
         "Natural Language :: English",
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     version=VERSION,
     data_files=DATA_FILES,
     options={"py2app": OPTIONS},
