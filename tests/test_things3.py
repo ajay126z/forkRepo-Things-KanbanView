@@ -10,7 +10,7 @@ from things3.things3 import Things3
 class Things3Case(unittest.TestCase):
     """Class documentation goes here."""
 
-    FILEPATH = {'filepath': "resources/demo.sqlite3"}
+    FILEPATH = {"filepath": "resources/demo.sqlite3"}
 
     def setUp(self):
         self.things3 = Things3(database="resources/demo.sqlite3")
