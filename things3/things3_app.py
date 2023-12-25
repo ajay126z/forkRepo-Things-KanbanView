@@ -60,8 +60,6 @@ class Things3App:
             frameless=False,
         )
 
-        if not appstore:
-            self.window.events.closed += advertise
         self.window.events.closing += self.closing
         self.api_thread = Thread(target=self.open_api)
 
